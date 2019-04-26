@@ -1,14 +1,15 @@
 import "dart:typed_data";
-import "actor_shape.dart";
+
+import "actor_artboard.dart";
 import "actor_component.dart";
 import "actor_node.dart";
+import "actor_shape.dart";
 import "actor_skinnable.dart";
-import "actor_artboard.dart";
-import "stream_reader.dart";
-import "path_point.dart";
-import "math/vec2d.dart";
-import "math/mat2d.dart";
 import "math/aabb.dart";
+import "math/mat2d.dart";
+import "math/vec2d.dart";
+import "path_point.dart";
+import "stream_reader.dart";
 
 abstract class ActorBasePath {
   //bool get isClosed;
@@ -45,7 +46,7 @@ abstract class ActorBasePath {
       localTransform = transform;
     }
 
-    for (Vec2D p in pts) {
+    for (final Vec2D p in pts) {
       Vec2D wp = Vec2D.transformMat2D(p, p, localTransform);
       if (wp[0] < minX) {
         minX = wp[0];
@@ -64,7 +65,7 @@ abstract class ActorBasePath {
     return AABB.fromValues(minX, minY, maxX, maxY);
   }
 
-  invalidateDrawable() {
+  void invalidateDrawable() {
     invalidatePath();
     if (parent is ActorShape) {
       parent.invalidateShape();
@@ -78,7 +79,7 @@ abstract class ActorBasePath {
     double maxY = -double.maxFinite;
 
     List<PathPoint> renderPoints = points;
-    for (PathPoint point in renderPoints) {
+    for (final PathPoint point in renderPoints) {
       Vec2D t = point.translation;
       double x = t[0];
       double y = t[1];
@@ -204,7 +205,7 @@ class ActorPath extends ActorNode with ActorSkinnable, ActorBasePath {
 
     Float32List boneMatrices = skin.boneMatrices;
     List<PathPoint> deformed = <PathPoint>[];
-    for (PathPoint point in _points) {
+    for (final PathPoint point in _points) {
       deformed.add(point.skin(worldTransform, boneMatrices));
     }
     return deformed;
@@ -232,7 +233,7 @@ class ActorPath extends ActorNode with ActorSkinnable, ActorBasePath {
     });
     Float32List vertices = Float32List(length);
     int readIdx = 0;
-    for (PathPoint point in points) {
+    for (final PathPoint point in points) {
       vertices[readIdx++] = point.translation[0];
       vertices[readIdx++] = point.translation[1];
       if (point.pointType == PointType.Straight) {
@@ -257,11 +258,12 @@ class ActorPath extends ActorNode with ActorSkinnable, ActorBasePath {
     artboard.addDirt(this, VertexDeformDirty, false);
   }
 
+  @override
   void update(int dirt) {
     if (vertexDeform != null &&
         (dirt & VertexDeformDirty) == VertexDeformDirty) {
       int readIdx = 0;
-      for (PathPoint point in _points) {
+      for (final PathPoint point in _points) {
         point.translation[0] = vertexDeform[readIdx++];
         point.translation[1] = vertexDeform[readIdx++];
         switch (point.pointType) {
@@ -327,6 +329,7 @@ class ActorPath extends ActorNode with ActorSkinnable, ActorBasePath {
     return component;
   }
 
+  @override
   ActorComponent makeInstance(ActorArtboard resetArtboard) {
     ActorPath instanceEvent = ActorPath();
     instanceEvent.copyPath(this, resetArtboard);

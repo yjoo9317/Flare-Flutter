@@ -1,10 +1,10 @@
-import "stream_reader.dart";
 import "actor_artboard.dart";
-import "math/mat2d.dart";
-import "math/vec2d.dart";
 import "actor_component.dart";
 import "actor_constraint.dart";
 import "actor_flags.dart";
+import "math/mat2d.dart";
+import "math/vec2d.dart";
+import "stream_reader.dart";
 
 typedef bool NodeWalkCallback(ActorNode node);
 
@@ -12,9 +12,7 @@ class ActorClip {
   int clipIdx;
   ActorNode node;
 
-  ActorClip(int idx) {
-    clipIdx = idx;
-  }
+  ActorClip(this.clipIdx);
 }
 
 class ActorNode extends ActorComponent {
@@ -267,6 +265,7 @@ class ActorNode extends ActorComponent {
     return _children;
   }
 
+  @override
   ActorComponent makeInstance(ActorArtboard resetArtboard) {
     ActorNode instanceNode = ActorNode();
     instanceNode.copyNode(this, resetArtboard);
@@ -326,6 +325,7 @@ class ActorNode extends ActorComponent {
               : _constraints + _peerConstraints) ??
       <ActorConstraint>[];
 
+  @override
   void update(int dirt) {
     if ((dirt & TransformDirty) == TransformDirty) {
       updateTransform();
@@ -342,6 +342,7 @@ class ActorNode extends ActorComponent {
     }
   }
 
+  @override
   void resolveComponentIndices(List<ActorComponent> components) {
     super.resolveComponentIndices(components);
 
@@ -349,18 +350,19 @@ class ActorNode extends ActorComponent {
       return;
     }
 
-    for (ActorClip clip in _clips) {
+    for (final ActorClip clip in _clips) {
       clip.node = components[clip.clipIdx];
     }
   }
 
+  @override
   void completeResolve() {
     // Nothing to complete for actornode.
   }
 
   bool eachChildRecursive(NodeWalkCallback cb) {
     if (_children != null) {
-      for (ActorNode child in _children) {
+      for (final ActorNode child in _children) {
         if (cb(child) == false) {
           return false;
         }
@@ -378,7 +380,7 @@ class ActorNode extends ActorComponent {
       return false;
     }
 
-    for (ActorNode child in _children) {
+    for (final ActorNode child in _children) {
       if (cb(child) == false) {
         return false;
       }

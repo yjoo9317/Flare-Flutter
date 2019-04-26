@@ -1,9 +1,9 @@
-import "../stream_reader.dart";
+import "../actor_artboard.dart";
 import "../actor_component.dart";
 import "../actor_event.dart";
-import "../actor_artboard.dart";
-import "property_types.dart";
+import "../stream_reader.dart";
 import "keyframe.dart";
+import "property_types.dart";
 
 typedef KeyFrame KeyFrameReader(StreamReader reader, ActorComponent component);
 
@@ -167,7 +167,7 @@ class PropertyAnimation {
   }
 
   void apply(double time, ActorComponent component, double mix) {
-    if (_keyFrames.length == 0) {
+    if (_keyFrames.isEmpty) {
       return;
     }
 
@@ -180,7 +180,7 @@ class PropertyAnimation {
       int end = _keyFrames.length - 1;
 
       while (start <= end) {
-        mid = ((start + end) >> 1);
+        mid = (start + end) >> 1;
         element = _keyFrames[mid].time;
         if (element < time) {
           start = mid + 1;
@@ -243,7 +243,7 @@ class ComponentAnimation {
   }
 
   void apply(double time, List<ActorComponent> components, double mix) {
-    for (PropertyAnimation propertyAnimation in _properties) {
+    for (final PropertyAnimation propertyAnimation in _properties) {
       if (propertyAnimation != null) {
         propertyAnimation.apply(time, components[_componentIndex], mix);
       }
@@ -342,7 +342,7 @@ class ActorAnimation {
               int end = kfl - 1;
 
               while (start <= end) {
-                mid = ((start + end) >> 1);
+                mid = (start + end) >> 1;
                 element = keyFrames[mid].time;
                 if (element < toTime) {
                   start = mid + 1;

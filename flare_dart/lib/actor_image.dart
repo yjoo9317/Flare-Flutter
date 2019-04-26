@@ -50,6 +50,14 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
     _sequenceFrame = value;
   }
 
+  bool setTextureIndex(int value) {
+    if(value != _textureIndex) {
+      _textureIndex = value;
+      return true;
+    }
+    return false;
+  }
+
   int get textureIndex {
     return _textureIndex;
   }

@@ -124,6 +124,7 @@ abstract class KeyFrameNumeric extends KeyFrameWithInterpolation {
     return true;
   }
 
+  @override
   void applyInterpolation(
       ActorComponent component, double time, KeyFrame toFrame, double mix) {
     KeyFrameNumeric to = toFrame as KeyFrameNumeric;
@@ -134,6 +135,7 @@ abstract class KeyFrameNumeric extends KeyFrameWithInterpolation {
     setValue(component, _value * (1.0 - f) + to._value * f, mix);
   }
 
+  @override
   void apply(ActorComponent component, double mix) {
     setValue(component, _value, mix);
   }
@@ -1116,6 +1118,7 @@ class KeyFrameStrokeStart extends KeyFrameNumeric {
     return null;
   }
 
+  @override
   void setValue(ActorComponent component, double value, double mix) {
     if (component == null) return;
 
@@ -1133,6 +1136,7 @@ class KeyFrameStrokeEnd extends KeyFrameNumeric {
     return null;
   }
 
+  @override
   void setValue(ActorComponent component, double value, double mix) {
     if (component == null) return;
 
@@ -1150,6 +1154,7 @@ class KeyFrameStrokeOffset extends KeyFrameNumeric {
     return null;
   }
 
+  @override
   void setValue(ActorComponent component, double value, double mix) {
     if (component == null) return;
 
