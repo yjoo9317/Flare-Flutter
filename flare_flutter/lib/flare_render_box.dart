@@ -225,7 +225,7 @@ abstract class FlareRenderBox extends RenderBox {
 
     FlareCacheAsset asset = await cachedActor(assetBundle, filename);
 
-    if (!attached || asset == null) {
+    if (!attached || asset == null || _assets.isNotEmpty) {
       return null;
     }
     _assets.add(asset);
