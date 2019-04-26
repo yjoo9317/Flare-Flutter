@@ -1,14 +1,13 @@
 import 'dart:math';
 import 'dart:typed_data';
+
+import 'package:flare_dart/actor_drawable.dart';
+import 'package:flare_dart/math/aabb.dart';
+import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_flutter/flare_render_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flare_dart/actor_drawable.dart';
-import 'package:flare_dart/math/mat2d.dart';
-import 'package:flare_dart/math/vec2d.dart';
-import 'package:flare_dart/math/aabb.dart';
+
 import 'flare.dart';
 import 'flare_controller.dart';
 
@@ -175,6 +174,7 @@ class FlareActorRenderObject extends FlareRenderBox {
 
   /// We're playing if we're not paused and our controller is active (or
   /// there's no controller) or there are animations running.
+  @override
   bool get isPlaying =>
       !_isPaused &&
       ((_controller?.isActive?.value ?? false) || _animationLayers.isNotEmpty);
@@ -233,7 +233,6 @@ class FlareActorRenderObject extends FlareRenderBox {
               _color.blue / 255.0,
               _color.opacity
             ]);
-      _artboard.advance(0.0);
       updateBounds();
 
       if (_controller != null) {
