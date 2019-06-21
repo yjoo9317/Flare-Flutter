@@ -8,8 +8,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # flare_dart:
+  #   path: ../flare_dart
   flare_dart:
-    path: ../flare_dart
+    git: 
+      url: git://github.com/2d-inc/Flare-Flutter.git
+      ref: intrinsic_size_experiment
+      path: flare_dart
 dev_dependencies:
   flutter_test:
     sdk: flutter
