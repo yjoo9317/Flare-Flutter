@@ -83,8 +83,8 @@ abstract class FlareRenderBox extends RenderBox {
     }
   }
 
-   @override
-   bool get sizedByParent => !_useIntrinsicSize || _intrinsicSize == null;
+  @override
+  bool get sizedByParent => !_useIntrinsicSize || _intrinsicSize == null;
 
   @override
   void performLayout() {
@@ -139,7 +139,7 @@ abstract class FlareRenderBox extends RenderBox {
   AABB get aabb;
 
   void paintFlare(Canvas canvas, Mat2D viewTransform);
-  void prePaint(Canvas canvas, Offset offset) {}
+  void prePaint(Canvas canvas, Rect rect) {}
   void postPaint(Canvas canvas, Offset offset) {}
 
   @override
@@ -169,7 +169,6 @@ abstract class FlareRenderBox extends RenderBox {
       double scaleX = 1.0, scaleY = 1.0;
 
       canvas.save();
-      prePaint(canvas, offset);
 
       switch (_fit) {
         case BoxFit.fill:
@@ -223,6 +222,17 @@ abstract class FlareRenderBox extends RenderBox {
       canvas.scale(scaleX, scaleY);
       canvas.translate(x, y);
 
+      Rect paintRect;
+      if (_useIntrinsicSize) {
+        paintRect = Rect.fromLTWH(0, 0, contentWidth, contentHeight);
+      } else {
+        double sizeW = size.width / scaleX;
+        double sizeH = size.height / scaleY;
+        double l = (contentWidth - sizeW) / 2;
+        double t = (contentHeight - sizeH) / 2;
+        paintRect = Rect.fromLTWH(l, t, sizeW, sizeH);
+      }
+      prePaint(canvas, paintRect);
       paintFlare(canvas, transform);
 
       canvas.restore();

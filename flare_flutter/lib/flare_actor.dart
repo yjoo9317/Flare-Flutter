@@ -377,9 +377,9 @@ class FlareActorRenderObject extends FlareRenderBox {
   AABB get aabb => _setupAABB;
 
   @override
-  void prePaint(Canvas canvas, Offset offset) {
+  void prePaint(Canvas canvas, Rect rect) {
     if (shouldClip) {
-      canvas.clipRect(offset & size);
+      canvas.clipRect(rect);
     }
   }
 
